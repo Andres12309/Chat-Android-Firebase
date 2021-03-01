@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "569493381249",
+    "project_id": "iachat-android-project",
+    "storage_bucket": "iachat-android-project.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:569493381249:android:c7e2b27ca45a37a51ead80",
+        "android_client_info": {
+          "package_name": "com.studentsac.iachat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "569493381249-cj4gelp1jhl2sjjsud599vtjtoeu9tgi.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBxcNIZzlhZNKVmyiaG8qYnFUJ09d5bqug"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "569493381249-cj4gelp1jhl2sjjsud599vtjtoeu9tgi.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
