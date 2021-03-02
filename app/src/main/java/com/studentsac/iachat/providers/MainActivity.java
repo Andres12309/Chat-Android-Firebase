@@ -26,9 +26,11 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.studentsac.iachat.R;
 import com.studentsac.iachat.activities.CompleteInfoActivity;
+import com.studentsac.iachat.activities.HomeActivity;
 import com.studentsac.iachat.models.User;
 
 import java.util.HashMap;
@@ -111,13 +113,28 @@ public class MainActivity extends AppCompatActivity {
                     mUser.setId(user.getUid());
                     mUser.setUsername(user.getDisplayName());
                     mUser.setEmail(user.getEmail());
-                    mUsersProvider.create(mUser).addOnSuccessListener(new OnSuccessListener<Void>() {
+
+                    mUsersProvider.getUserInfo(mUser.getId()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                         @Override
-                        public void onSuccess(Void aVoid) {
-                            Intent intent = new Intent(MainActivity.this, CompleteInfoActivity.class);
-                            startActivity(intent);
+                        public void onSuccess(DocumentSnapshot documentSnapshot) {
+                            if(!documentSnapshot.exists()){
+                                mUsersProvider.create(mUser).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+                                        Intent intent = new Intent(MainActivity.this, CompleteInfoActivity.class);
+                                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                        startActivity(intent);
+                                    }
+                                });
+                            }
+                            else{
+                                Intent intent = new Intent(MainActivity.this, CompleteInfoActivity.class);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                startActivity(intent);
+                            }
                         }
                     });
+
                     MainActivity.this.finish();
                 } else {
                     // If sign in fails, display a message to the user.
@@ -136,7 +153,9 @@ public class MainActivity extends AppCompatActivity {
     public void onStart(){
         FirebaseUser user = mfirebaseAuth.getCurrentUser();
         if(user != null){
-            startActivity(new Intent(MainActivity.this, CompleteInfoActivity.class));
+            Intent intent = new Intent(MainActivity.this, HomeActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
         }
         super.onStart();
     }
