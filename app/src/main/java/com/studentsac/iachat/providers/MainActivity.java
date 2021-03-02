@@ -127,10 +127,26 @@ public class MainActivity extends AppCompatActivity {
                                     }
                                 });
                             }
-                            else{
-                                Intent intent = new Intent(MainActivity.this, CompleteInfoActivity.class);
-                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                                startActivity(intent);
+                            else if(documentSnapshot.contains("username") && documentSnapshot.contains("image")){
+                                String username = documentSnapshot.getString("username");
+                                String image = documentSnapshot.getString("image");
+                                if(username != null && image != null){
+                                    if(!username.equals("") && !image.equals("")){
+                                        Intent intent = new Intent(MainActivity.this, HomeActivity.class);
+                                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                        startActivity(intent);
+                                    }
+                                    else{
+                                        Intent intent = new Intent(MainActivity.this, CompleteInfoActivity.class);
+                                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                        startActivity(intent);
+                                    }
+                                }
+                                else{
+                                    Intent intent = new Intent(MainActivity.this, CompleteInfoActivity.class);
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    startActivity(intent);
+                                }
                             }
                         }
                     });
@@ -147,6 +163,10 @@ public class MainActivity extends AppCompatActivity {
     public void ingresar(){
         Intent signIntent = mGoogleSignInClient.getSignInIntent();
         startActivityForResult(signIntent, RC_SIGN_IN);
+    }
+
+    public void singOut(){
+        mfirebaseAuth.signOut();
     }
 
     @Override
