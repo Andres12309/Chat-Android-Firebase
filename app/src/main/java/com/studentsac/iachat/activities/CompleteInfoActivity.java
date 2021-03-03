@@ -99,6 +99,7 @@ public class CompleteInfoActivity extends AppCompatActivity {
         btnConfirmar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mUsername = username.getText().toString();
                 if(!mUsername.equals("") && mImageFile != null){
                     saveImage();
                 }
@@ -116,7 +117,7 @@ public class CompleteInfoActivity extends AppCompatActivity {
 
     private void uploadInfoUser(String url) {
         FirebaseUser currentUser = mAuth.getCurrentUser();
-        mUsername = username.getText().toString();
+        //mUsername = username.getText().toString();
         User user = new User();
         user.setUsername(mUsername);
         user.setEmail(currentUser.getEmail());
