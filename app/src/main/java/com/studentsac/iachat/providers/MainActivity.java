@@ -137,16 +137,15 @@ public class MainActivity extends AppCompatActivity {
                                         startActivity(intent);
                                     }
                                     else{
-                                        Intent intent = new Intent(MainActivity.this, CompleteInfoActivity.class);
-                                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                                        startActivity(intent);
+                                        goToCompleteActivity();
                                     }
                                 }
                                 else{
-                                    Intent intent = new Intent(MainActivity.this, CompleteInfoActivity.class);
-                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                                    startActivity(intent);
+                                    goToCompleteActivity();
                                 }
+                            }
+                            else{
+                                goToCompleteActivity();
                             }
                         }
                     });
@@ -158,6 +157,12 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    private void goToCompleteActivity() {
+        Intent intent = new Intent(MainActivity.this, CompleteInfoActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
     }
 
     public void ingresar(){
