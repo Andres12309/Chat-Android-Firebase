@@ -20,6 +20,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/circleImageProfile"
                 android:layout_width="match_parent"
                 android:layout_height="170dp"
                 android:src="@drawable/ic_person_profile"
@@ -58,6 +59,7 @@
                     android:layout_height="wrap_content"
                     android:text="Nombre" />
                 <TextView
+                    android:id="@+id/usernameView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Nombre de usuario"
@@ -72,6 +74,7 @@
                     android:layout_marginTop="5dp"/>
             </LinearLayout>
             <ImageView
+                android:id="@+id/editUsername"
                 android:layout_width="25dp"
                 android:layout_height="25dp"
                 android:src="@drawable/ic_edit_profile"
@@ -109,6 +112,7 @@
                     android:layout_height="wrap_content"
                     android:text="Info" />
                 <TextView
+                    android:id="@+id/estadoView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Hola estas usando IAChat!!"
@@ -150,6 +154,7 @@
                     android:layout_height="wrap_content"
                     android:text="Contacto" />
                 <TextView
+                    android:id="@+id/emailView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="firend@gmail.com"

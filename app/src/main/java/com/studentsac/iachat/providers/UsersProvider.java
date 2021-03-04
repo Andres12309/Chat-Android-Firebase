@@ -31,4 +31,17 @@ public class UsersProvider {
         map.put("image",user.getImage());
         return mCollection.document(user.getId()).update(map);
     }
+
+    public Task<Void> updateImage(String id, String url){
+        Map<String,Object> map = new HashMap<>();
+        map.put("image",url);
+        return mCollection.document(id).update(map);
+    }
+
+    public Task<Void> updateUsername(String id, String username){
+        Map<String,Object> map = new HashMap<>();
+        map.put("username",username);
+        return mCollection.document(id).update(map);
+    }
+
 }

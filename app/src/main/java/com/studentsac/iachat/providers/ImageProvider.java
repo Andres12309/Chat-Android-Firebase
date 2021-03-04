@@ -14,9 +14,11 @@ import java.util.Date;
 
 public class ImageProvider {
     StorageReference mStorage;
+    FirebaseStorage firebaseStorage;
 
     public ImageProvider(){
-        mStorage = FirebaseStorage.getInstance().getReference();
+        firebaseStorage = FirebaseStorage.getInstance();
+        mStorage = firebaseStorage.getReference();
     }
 
     public UploadTask save(Context context, File file){
@@ -30,6 +32,10 @@ public class ImageProvider {
 
     public Task<Uri> getDownloadUri(){
         return mStorage.getDownloadUrl();
+    }
+
+    public Task<Void> delete(String url){
+        return firebaseStorage.getReferenceFromUrl(url).delete();
     }
 
 }
