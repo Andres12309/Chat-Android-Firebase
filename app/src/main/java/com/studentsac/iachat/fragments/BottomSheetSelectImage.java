@@ -34,6 +34,7 @@ public class BottomSheetSelectImage extends BottomSheetDialogFragment {
         BottomSheetSelectImage bottomSheetSelectImage = new BottomSheetSelectImage();
         Bundle arguments = new Bundle();
         arguments.putString("image",usrImageProfile);
+        bottomSheetSelectImage.setArguments(arguments);
         return  bottomSheetSelectImage;
     }
 
@@ -62,7 +63,7 @@ public class BottomSheetSelectImage extends BottomSheetDialogFragment {
                 deleteImage();
             }
         });
-        mDeleteImageProfile.setOnClickListener(new View.OnClickListener() {
+        mSelectImageProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 updateImage();
