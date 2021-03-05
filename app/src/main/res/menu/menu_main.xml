@@ -4,6 +4,9 @@
     <item android:id="@+id/itemProfile"
         android:title="Perfil"
         app:showAsAction="never"/>
+    <item android:id="@+id/itemFriend"
+        android:title="Agregar amigo"
+        app:showAsAction="never"/>
     <item android:id="@+id/itemSignOut"
         android:title="Cerrar sesion"
         app:showAsAction="never"/>

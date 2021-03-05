@@ -1,6 +1,7 @@
 package com.studentsac.iachat.activities;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
@@ -24,6 +25,8 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 import com.studentsac.iachat.R;
@@ -112,11 +115,11 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     private void getUserInfo() {
-        mUsersProvider.getUserInfo(mAuth.getUid()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+        mUsersProvider.getUserInfo(mAuth.getUid()).addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                if(documentSnapshot.exists()){
-                    mUser = documentSnapshot.toObject(User.class);
+            public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+                if(value.exists()){
+                    mUser = value.toObject(User.class);
                     mUsernameView.setText(mUser.getUsername());
                     mEmailView.setText(mUser.getEmail());
                     if(mUser.getImage()!=null){

@@ -29,7 +29,8 @@
                 app:mt_textColor="@color/colorGray"
                 app:mt_hintColor="@color/colorGray"
                 app:mt_backIconTint="@color/white"
-                app:mt_leftTextSelectorTint="@color/colorGray"/>
+                app:mt_leftTextSelectorTint="@color/colorGray"
+                app:mt_menuIconTint="@color/white"/>
         </LinearLayout>
 
         <com.google.android.material.tabs.TabLayout
@@ -39,7 +40,7 @@
             android:background="@color/colorPrimary"
             app:tabIndicatorColor="@color/white"
             app:tabSelectedTextColor="@color/colorGrayLight"
-            app:tabTextColor="@color/colorAccent"/>
+            app:tabTextColor="@color/colorGrayDark"/>
 
         <androidx.viewpager.widget.ViewPager
             android:id="@+id/viewpager"
