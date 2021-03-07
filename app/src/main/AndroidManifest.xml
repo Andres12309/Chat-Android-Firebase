@@ -16,8 +16,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.IAChat"
         tools:replace="android:theme">
-        <activity android:name=".activities.ProfileActivity"
-            android:parentActivityName=".activities.HomeActivity"></activity>
+        <activity android:name=".activities.ChatActivity"></activity>
+        <activity
+            android:name=".activities.ProfileActivity"
+            android:parentActivityName=".activities.HomeActivity" />
         <activity android:name=".activities.HomeActivity" />
         <activity android:name=".activities.CompleteInfoActivity" />
         <activity android:name=".providers.MainActivity">

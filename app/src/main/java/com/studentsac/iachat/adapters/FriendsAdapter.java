@@ -62,13 +62,14 @@ public class FriendsAdapter extends FirestoreRecyclerAdapter<User, FriendsAdapte
         holder.mViewAdapter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                goToChatActivity();
+                goToChatActivity(user.getId());
             }
         });
     }
 
-    private void goToChatActivity() {
+    private void goToChatActivity(String id) {
         Intent intent = new Intent(context, ChatActivity.class);
+        intent.putExtra("id",id);
         context.startActivity(intent);
     }
 
