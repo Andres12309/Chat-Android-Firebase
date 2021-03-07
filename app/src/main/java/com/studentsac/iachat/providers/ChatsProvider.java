@@ -20,6 +20,10 @@ public class ChatsProvider {
         return mCollectionReference.document().set(chat);
     }
 
+    public Query getChatsUsers(String idUser){
+        return mCollectionReference.whereArrayContains("ids",idUser);
+    }
+
     public Query getChatByUsers(String idUser1, String idUser2){
         ArrayList<String> ids = new ArrayList<>();
         ids.add(idUser1+idUser2);
