@@ -27,6 +27,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 import com.studentsac.iachat.R;
@@ -65,6 +66,8 @@ public class ProfileActivity extends AppCompatActivity {
     File mImageFile;
 
     ImageView imageViewEditUsername;
+
+    ListenerRegistration listenerRegistration;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,8 +117,16 @@ public class ProfileActivity extends AppCompatActivity {
         MyToolbar.show(this,"Perfil",true);
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(listenerRegistration!=null){
+            listenerRegistration.remove();
+        }
+    }
+
     private void getUserInfo() {
-        mUsersProvider.getUserInfo(mAuth.getUid()).addSnapshotListener(new EventListener<DocumentSnapshot>() {
+        listenerRegistration = mUsersProvider.getUserInfo(mAuth.getUid()).addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
                 if(value.exists()){
@@ -126,6 +137,12 @@ public class ProfileActivity extends AppCompatActivity {
                         if(!mUser.getImage().equals("")){
                             Picasso.with(ProfileActivity.this).load(mUser.getImage()).into(mCircleImageView);
                         }
+                        else{
+                            setImageDefault();
+                        }
+                    }
+                    else{
+                        setImageDefault();
                     }
                 }
             }
@@ -152,7 +169,7 @@ public class ProfileActivity extends AppCompatActivity {
         }
     }
 
-    public void setImageDefault(){
+    private void setImageDefault(){
         mCircleImageView.setImageResource(R.drawable.ic_person_profile);
     }
 
