@@ -1,9 +1,11 @@
 package com.studentsac.iachat.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -11,8 +13,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.squareup.picasso.Picasso;
 import com.studentsac.iachat.R;
+import com.studentsac.iachat.activities.ChatActivity;
 import com.studentsac.iachat.models.User;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -20,14 +25,27 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class FriendsAdapter extends FirestoreRecyclerAdapter<User, FriendsAdapter.ViewHolder> {
 
     Context context;
+    FirebaseAuth mAuth;
 
     public FriendsAdapter(FirestoreRecyclerOptions options, Context context){
         super(options);
         this.context = context;
+
+        mAuth = FirebaseAuth.getInstance();
     }
 
     @Override
     protected void onBindViewHolder(@NonNull ViewHolder holder, int position, @NonNull User user) {
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if(user.getId().equals(currentUser.getUid())){
+            RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) holder.itemView.getLayoutParams();
+            params.height = 0;
+            params.width = LinearLayout.LayoutParams.MATCH_PARENT;
+            params.topMargin = 0;
+            params.bottomMargin = 0;
+            holder.itemView.setVisibility(View.VISIBLE);
+        }
+
         holder.mUsername.setText(user.getUsername());
         if(user.getImage() != null){
             if(!user.getImage().equals("")){
@@ -40,6 +58,18 @@ public class FriendsAdapter extends FirestoreRecyclerAdapter<User, FriendsAdapte
         else {
             holder.circleImageViewUser.setImageResource(R.drawable.ic_person);
         }
+
+        holder.mViewAdapter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goToChatActivity();
+            }
+        });
+    }
+
+    private void goToChatActivity() {
+        Intent intent = new Intent(context, ChatActivity.class);
+        context.startActivity(intent);
     }
 
     @NonNull
@@ -53,10 +83,12 @@ public class FriendsAdapter extends FirestoreRecyclerAdapter<User, FriendsAdapte
 
         TextView mUsername;
         CircleImageView circleImageViewUser;
+        View mViewAdapter;
 
         public ViewHolder (View view){
             super(view);
 
+            mViewAdapter = view;
             mUsername = view.findViewById(R.id.textUsernameView);
             circleImageViewUser = view.findViewById(R.id.circleImageUser);
 
