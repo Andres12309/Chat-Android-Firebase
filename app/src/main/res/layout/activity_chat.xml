@@ -23,6 +23,7 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycleViewMessages"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
     </LinearLayout>
@@ -35,6 +36,7 @@
         android:layout_margin="5dp">
 
         <EditText
+            android:id="@+id/textViewMessage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:hint="Escribe algo..."
@@ -44,6 +46,7 @@
             android:padding="10dp"/>
 
         <ImageView
+            android:id="@+id/sendMessage"
             android:layout_width="45dp"
             android:layout_height="45dp"
             android:src="@mipmap/ic_send"

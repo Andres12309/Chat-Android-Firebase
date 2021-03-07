@@ -17,7 +17,7 @@ public class ChatsProvider {
     }
 
     public Task<Void> create(Chat chat){
-        return mCollectionReference.document().set(chat);
+        return mCollectionReference.document(chat.getId()).set(chat);
     }
 
     public Query getChatsUsers(String idUser){
