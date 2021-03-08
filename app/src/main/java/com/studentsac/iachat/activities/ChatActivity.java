@@ -172,7 +172,7 @@ public class ChatActivity extends AppCompatActivity {
                 for(DocumentSnapshot document: queryDocumentSnapshots.getDocuments()){
                     Message message = document.toObject(Message.class);
                     if(!message.getIdUserSend().equals(mAuth.getCurrentUser().getUid())){
-                        messagesProvider.updateStatusMessage(message.getId(),"READ");
+                        messagesProvider.updateStatusMessages(message.getId(),"READ");
                     }
                 }
             }

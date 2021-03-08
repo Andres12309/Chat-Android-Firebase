@@ -27,17 +27,17 @@ public class MessagesProvider {
         return mCollectionReference.whereEqualTo("idChat",idChat).orderBy("timestamp",Query.Direction.ASCENDING);
     }
 
-    public Task<Void> updateStatusMessage(String idMessage, String statusMessage){
+    public Task<Void> updateStatusMessages(String idMessage, String statusMessage){
         Map<String,Object> map = new HashMap<>();
         map.put("status",statusMessage);
         return mCollectionReference.document(idMessage).update(map);
     }
 
     public Query getMessageNotRead(String idChat){
-        return mCollectionReference.whereNotEqualTo("idChat",idChat).whereEqualTo("status","SENT");
+        return mCollectionReference.whereEqualTo("idChat",idChat).whereEqualTo("status","SENT");
     }
     public Query getMessageNotReadReceive(String idChat,String idReceiver){
-        return mCollectionReference.whereNotEqualTo("idChat",idChat).whereEqualTo("status","SENT").whereEqualTo("idUserReceive",idReceiver);
+        return mCollectionReference.whereEqualTo("idChat",idChat).whereEqualTo("status","SENT").whereEqualTo("idUserReceive",idReceiver);
     }
 
     public Query getLastMessage(String idChat){
