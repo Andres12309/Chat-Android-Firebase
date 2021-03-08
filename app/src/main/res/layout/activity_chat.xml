@@ -36,15 +36,27 @@
         android:layout_gravity="bottom"
         android:layout_margin="5dp">
 
-        <EditText
-            android:id="@+id/textViewMessage"
+        <FrameLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="Escribe algo..."
-            android:inputType="textMultiLine"
-            android:layout_weight="1"
-            android:background="@drawable/custom_edit_text"
-            android:padding="10dp"/>
+            android:layout_weight="1">
+
+            <EditText
+                android:id="@+id/textViewMessage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Escribe algo..."
+                android:inputType="textMultiLine"
+                android:background="@drawable/custom_edit_text"
+                android:padding="10dp"/>
+            <ImageView
+                android:id="@+id/imageViewSelectPictures"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:src="@drawable/ic_camera_gray"
+                android:layout_gravity="right|center_vertical"/>
+
+        </FrameLayout>
 
         <ImageView
             android:id="@+id/sendMessage"
