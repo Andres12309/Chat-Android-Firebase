@@ -42,7 +42,6 @@ public class MessagesAdapter extends FirestoreRecyclerAdapter<Message, MessagesA
 
     @Override
     protected void onBindViewHolder(@NonNull ViewHolder holder, int position, @NonNull Message message) {
-        FirebaseUser currentUser = mAuth.getCurrentUser();
 
         holder.textViewMessage.setText(message.getMessage());
         holder.textViewDate.setText(RelativeTime.timeFormatAMPM(message.getTimestamp(),context));
@@ -57,7 +56,7 @@ public class MessagesAdapter extends FirestoreRecyclerAdapter<Message, MessagesA
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.cardview_message,parent);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.cardview_message,parent,false);
         return new ViewHolder(view);
     }
 

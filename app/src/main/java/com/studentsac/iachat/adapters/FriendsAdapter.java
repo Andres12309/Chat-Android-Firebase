@@ -76,7 +76,7 @@ public class FriendsAdapter extends FirestoreRecyclerAdapter<User, FriendsAdapte
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.cardview_friends,parent);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.cardview_friends,parent,false);
         return new ViewHolder(view);
     }
 

@@ -116,7 +116,7 @@ public class ChatsAdapter extends FirestoreRecyclerAdapter<Chat, ChatsAdapter.Vi
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.cardview_chats,parent);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.cardview_chats,parent,false);
         return new ViewHolder(view);
     }
 

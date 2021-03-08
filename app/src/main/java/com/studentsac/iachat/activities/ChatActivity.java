@@ -66,11 +66,13 @@ public class ChatActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
 
-        userId = getIntent().getStringExtra("idUser");
-        idChat = getIntent().getStringExtra("idChat");
+        userId = this.getIntent().getStringExtra("idUser");
+        idChat = this.getIntent().getStringExtra("idChat");
 
         usersProvider = new UsersProvider();
         messagesProvider = new MessagesProvider();
+        chatsProvider = new ChatsProvider();
+
 
 
         editTextMessage = findViewById(R.id.textViewMessage);
@@ -134,8 +136,7 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     private void checkIfExistChat() {
-        FirebaseUser currentUser =  mAuth.getCurrentUser();
-        chatsProvider.getChatByUsers(currentUser.getUid(),userId).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+        chatsProvider.getChatByUsers(mAuth.getCurrentUser().getUid(),userId).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                 if(queryDocumentSnapshots != null){
@@ -159,6 +160,7 @@ public class ChatActivity extends AppCompatActivity {
                 .build();
         messagesAdapter = new MessagesAdapter(options,ChatActivity.this);
         recyclerViewMessage.setAdapter(messagesAdapter);
+        messagesAdapter.startListening();
     }
 
     private void createChat() {
