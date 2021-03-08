@@ -24,7 +24,8 @@
             android:layout_height="wrap_content"
             android:text="Nuevo mensaje ..."
             android:textSize="16dp"
-            android:textColor="@color/white"/>
+            android:textColor="@color/white"
+            android:layout_marginRight="17dp"/>
 
         <LinearLayout
             android:layout_width="match_parent"

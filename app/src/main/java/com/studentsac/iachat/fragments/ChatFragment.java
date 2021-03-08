@@ -77,5 +77,8 @@ public class ChatFragment extends Fragment {
         if(chatsAdapter.getListener()!=null){
             chatsAdapter.getListener().remove();
         }
+        if(chatsAdapter.getListenerLastMessage()!=null){
+            chatsAdapter.getListenerLastMessage().remove();
+        }
     }
 }

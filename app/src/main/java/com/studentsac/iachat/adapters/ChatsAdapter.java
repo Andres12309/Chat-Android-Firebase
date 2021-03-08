@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -21,12 +22,16 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.ListenerRegistration;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.squareup.picasso.Picasso;
 import com.studentsac.iachat.R;
 import com.studentsac.iachat.activities.ChatActivity;
 import com.studentsac.iachat.models.Chat;
+import com.studentsac.iachat.models.Message;
 import com.studentsac.iachat.models.User;
+import com.studentsac.iachat.providers.MessagesProvider;
 import com.studentsac.iachat.providers.UsersProvider;
+import com.studentsac.iachat.utils.RelativeTime;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -37,8 +42,10 @@ public class ChatsAdapter extends FirestoreRecyclerAdapter<Chat, ChatsAdapter.Vi
 
     UsersProvider usersProvider;
     User mUser;
+    MessagesProvider messagesProvider;
 
     ListenerRegistration listenerRegistration;
+    ListenerRegistration listenerRegistrationLastMessage;
 
     public ChatsAdapter(FirestoreRecyclerOptions options, Context context){
         super(options);
@@ -46,6 +53,7 @@ public class ChatsAdapter extends FirestoreRecyclerAdapter<Chat, ChatsAdapter.Vi
 
         mAuth = FirebaseAuth.getInstance();
         usersProvider = new UsersProvider();
+        messagesProvider = new MessagesProvider();
         mUser = new User();
     }
 
@@ -62,9 +70,62 @@ public class ChatsAdapter extends FirestoreRecyclerAdapter<Chat, ChatsAdapter.Vi
             }
         }
 
+        getLastMessage(holder,chat.getId());
+
         getUserInfo(holder,idUser);
 
         clickChatView(holder,idUser,chat.getId());
+
+        getMessageNotRead(holder,chat.getId());
+    }
+
+    private void getMessageNotRead(ViewHolder holder, String idChat) {
+        messagesProvider.getMessageNotReadReceive(idChat,mAuth.getCurrentUser().getUid()).addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot querySnapshot, @Nullable FirebaseFirestoreException error) {
+                if(querySnapshot != null){
+                    int size = querySnapshot.size();
+                    if(size>0){
+                        holder.frameLayoutMessageNotRead.setVisibility(View.VISIBLE);
+                        holder.textViewNumberMessageNoRead.setText(String.valueOf(size));
+                        holder.textViewTimestamp.setTextColor(context.getResources().getColor(R.color.colorPrimaryLight));
+                    }
+                    else{
+                        holder.frameLayoutMessageNotRead.setVisibility(View.GONE);
+                        holder.textViewTimestamp.setTextColor(context.getResources().getColor(R.color.colorGrayDark));
+                    }
+                }
+            }
+        });
+    }
+
+    private void getLastMessage(ViewHolder holder, String idChat) {
+        listenerRegistrationLastMessage = messagesProvider.getLastMessage(idChat).addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot querySnapshot, @Nullable FirebaseFirestoreException error) {
+                if(querySnapshot != null){
+                    int sizeDocuments = querySnapshot.size();
+                    if(sizeDocuments>0){
+                        Message message = querySnapshot.getDocuments().get(0).toObject(Message.class);
+                        holder.textViewLastMessage.setText(message.getMessage());
+                        holder.textViewTimestamp.setText(RelativeTime.timeFormatAMPM(message.getTimestamp(),context));
+
+                        if(message.getIdUserSend().equals(mAuth.getCurrentUser().getUid())){
+                            holder.imageViewCheck.setVisibility(View.VISIBLE);
+                            if(message.getStatus().equals("SENT")){
+                                holder.imageViewCheck.setImageResource(R.drawable.icon_check_false);
+                            }
+                            else if(message.getStatus().equals("READ")){
+                                holder.imageViewCheck.setImageResource(R.drawable.icon_check_true);
+                            }
+                        }
+                        else{
+                            holder.imageViewCheck.setVisibility(View.GONE);
+                        }
+                    }
+                }
+            }
+        });
     }
 
     private void clickChatView(ViewHolder holder, final String idUser, final String id) {
@@ -105,6 +166,9 @@ public class ChatsAdapter extends FirestoreRecyclerAdapter<Chat, ChatsAdapter.Vi
     public ListenerRegistration getListener(){
         return listenerRegistration;
     }
+    public ListenerRegistration getListenerLastMessage(){
+        return listenerRegistrationLastMessage;
+    }
 
     private void goToChatActivity(String idUser, String idChat) {
         Intent intent = new Intent(context, ChatActivity.class);
@@ -128,6 +192,9 @@ public class ChatsAdapter extends FirestoreRecyclerAdapter<Chat, ChatsAdapter.Vi
         ImageView imageViewCheck;
         CircleImageView circleImageViewUser;
 
+        FrameLayout frameLayoutMessageNotRead;
+        TextView textViewNumberMessageNoRead;
+
         View mViewAdapter;
 
         public ViewHolder (View view){
@@ -138,7 +205,9 @@ public class ChatsAdapter extends FirestoreRecyclerAdapter<Chat, ChatsAdapter.Vi
             circleImageViewUser = view.findViewById(R.id.circleImageUser);
             imageViewCheck = view.findViewById(R.id.imageViewCheck);
             textViewTimestamp = view.findViewById(R.id.textViewTimestamp);
-            textViewLastMessage = view.findViewById(R.id.textLastMesage);
+            textViewLastMessage = view.findViewById(R.id.textLastMessage);
+            frameLayoutMessageNotRead = view.findViewById(R.id.frameLayoutMessageNotRead);
+            textViewNumberMessageNoRead = view.findViewById(R.id.textViewMessagePend);
         }
     }
 }

@@ -79,6 +79,7 @@ public class ChatActivity extends AppCompatActivity {
         imageViewSendMessage = findViewById(R.id.sendMessage);
         recyclerViewMessage = findViewById(R.id.recycleViewMessages);
         linearLayoutManager = new LinearLayoutManager(ChatActivity.this);
+        linearLayoutManager.setStackFromEnd(true);
         recyclerViewMessage.setLayoutManager(linearLayoutManager);
 
         mAuth = FirebaseAuth.getInstance();
@@ -108,7 +109,9 @@ public class ChatActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        messagesAdapter.stopListening();
+        if(messagesAdapter != null){
+            messagesAdapter.stopListening();
+        }
     }
 
     private void createMessage() {
@@ -126,6 +129,10 @@ public class ChatActivity extends AppCompatActivity {
                 @Override
                 public void onSuccess(Void aVoid) {
                     editTextMessage.setText("");
+                    if(messagesAdapter != null){
+                        messagesAdapter.notifyDataSetChanged();
+                    }
+                    chatsProvider.updateNumberMessage(idChat);
                     //Toast.makeText(ChatActivity.this, "Mensaje enviado con exito", Toast.LENGTH_LONG).show();
                 }
             });
@@ -146,7 +153,22 @@ public class ChatActivity extends AppCompatActivity {
                 else{
                     idChat = queryDocumentSnapshots.getDocuments().get(0).getId();
                     getMessageByChat();
+                    updateStatusMessages();
                     //Toast.makeText(ChatActivity.this, "Ya has intercambiado informacion con este amigo", Toast.LENGTH_LONG).show();
+                    }
+                }
+            }
+        });
+    }
+
+    private void updateStatusMessages() {
+        messagesProvider.getMessageNotRead(idChat).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                for(DocumentSnapshot document: queryDocumentSnapshots.getDocuments()){
+                    Message message = document.toObject(Message.class);
+                    if(!message.getIdUserSend().equals(mAuth.getCurrentUser().getUid())){
+                        messagesProvider.updateStatusMessage(message.getId(),"READ");
                     }
                 }
             }
@@ -161,6 +183,20 @@ public class ChatActivity extends AppCompatActivity {
         messagesAdapter = new MessagesAdapter(options,ChatActivity.this);
         recyclerViewMessage.setAdapter(messagesAdapter);
         messagesAdapter.startListening();
+
+        messagesAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+            @Override
+            public void onItemRangeInserted(int positionStart, int itemCount) {
+                super.onItemRangeInserted(positionStart, itemCount);
+                updateStatusMessages();
+                int allMessage = messagesAdapter.getItemCount();
+                int lastMessagePosition = linearLayoutManager.findLastCompletelyVisibleItemPosition();
+
+                if(lastMessagePosition == -1 || (positionStart >= (allMessage - 1) &&  lastMessagePosition == (positionStart - 1))){
+                    recyclerViewMessage.scrollToPosition(positionStart);
+                }
+            }
+        });
     }
 
     private void createChat() {
@@ -168,6 +204,7 @@ public class ChatActivity extends AppCompatActivity {
         Chat chat = new Chat();
         chat.setId(currentUser.getUid()+userId);
         chat.setTimestamp(new Date().getTime());
+        chat.setNumberMessages(0);
         ArrayList<String> ids = new ArrayList<>();
         ids.add(currentUser.getUid());
         ids.add(userId);
@@ -177,6 +214,7 @@ public class ChatActivity extends AppCompatActivity {
         chatsProvider.create(chat).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
+                getMessageByChat();
                 //Toast.makeText(ChatActivity.this, "Chat creado con exito", Toast.LENGTH_SHORT).show();
             }
         });

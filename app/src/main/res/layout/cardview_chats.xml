@@ -45,25 +45,50 @@
                     android:layout_height="wrap_content"
                     android:text="6:00 p.m"
                     android:textSize="10dp"
-                    android:maxLines="1"/>
+                    android:maxLines="1"
+                    android:textColor="@color/colorGrayDark"/>
             </LinearLayout>
+
             <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
                 android:layout_marginTop="2dp">
+
                 <ImageView
                     android:id="@+id/imageViewCheck"
-                    android:layout_width="20dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="20dp"
-                    android:src="@drawable/icon_check_true"/>
+                    android:src="@drawable/icon_check_true"
+                    android:layout_marginRight="5dp"
+                    android:visibility="gone"/>
                 <TextView
-                    android:id="@+id/textLastMesage"
+                    android:id="@+id/textLastMessage"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Ultimo mensaje"
                     android:textSize="16dp"
-                    android:layout_marginLeft="5dp"/>
+                    android:layout_marginLeft="5dp"
+                    android:layout_weight="1"/>
+
+                <FrameLayout
+                    android:id="@+id/frameLayoutMessageNotRead"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone">
+                    <View
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
+                        android:background="@drawable/circular_view"/>
+                    <TextView
+                        android:id="@+id/textViewMessagePend"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:text="0"
+                        android:textSize="12dp"
+                        android:layout_gravity="center"
+                        android:textColor="@color/white"/>
+                </FrameLayout>
             </LinearLayout>
 
             <View

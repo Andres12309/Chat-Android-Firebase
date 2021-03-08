@@ -7,6 +7,9 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.studentsac.iachat.models.Message;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class MessagesProvider {
     CollectionReference mCollectionReference;
 
@@ -22,6 +25,23 @@ public class MessagesProvider {
 
     public Query getMessageByChat(String idChat){
         return mCollectionReference.whereEqualTo("idChat",idChat).orderBy("timestamp",Query.Direction.ASCENDING);
+    }
+
+    public Task<Void> updateStatusMessage(String idMessage, String statusMessage){
+        Map<String,Object> map = new HashMap<>();
+        map.put("status",statusMessage);
+        return mCollectionReference.document(idMessage).update(map);
+    }
+
+    public Query getMessageNotRead(String idChat){
+        return mCollectionReference.whereNotEqualTo("idChat",idChat).whereEqualTo("status","SENT");
+    }
+    public Query getMessageNotReadReceive(String idChat,String idReceiver){
+        return mCollectionReference.whereNotEqualTo("idChat",idChat).whereEqualTo("status","SENT").whereEqualTo("idUserReceive",idReceiver);
+    }
+
+    public Query getLastMessage(String idChat){
+        return mCollectionReference.whereEqualTo("idChat",idChat).orderBy("timestamp",Query.Direction.DESCENDING).limit((1));
     }
 
 }
