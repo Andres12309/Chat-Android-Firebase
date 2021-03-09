@@ -61,8 +61,8 @@ public class ProfileActivity extends AppCompatActivity {
     User mUser;
 
     Options mOptions;
-
     ArrayList<String> mReturnValues = new ArrayList<>();
+
     File mImageFile;
 
     ImageView imageViewEditUsername;
