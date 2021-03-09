@@ -18,6 +18,17 @@
         android:paddingTop="10dp"
         android:paddingBottom="10dp">
 
+        <ImageView
+            android:id="@+id/imageViewMessage"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:src="@drawable/background_message"
+            android:scaleType="centerCrop"
+            android:minWidth="305dp"
+            android:visibility="gone"
+            android:layout_marginRight="10dp" />
+
+
         <TextView
             android:id="@+id/textViewMessage"
             android:layout_width="match_parent"

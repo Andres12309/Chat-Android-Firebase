@@ -43,7 +43,7 @@ public class ChatsProvider {
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 if(documentSnapshot.exists()){
                     if(documentSnapshot.contains("numberMessages")){
-                        Long numberMessages = documentSnapshot.getLong("numberMessages")+1;
+                        long numberMessages = documentSnapshot.getLong("numberMessages")+1;
                         Map<String,Object> map = new HashMap<>();
                         map.put("numberMessages",numberMessages);
                         mCollectionReference.document(idChat).update(map);

@@ -16,7 +16,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.IAChat"
         tools:replace="android:theme">
-        <activity android:name=".activities.ChatActivity"></activity>
+        <activity android:name=".activities.HistoriesConfirmActivity"
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden" />
+        <activity
+            android:name=".activities.ConfirmImageSendActivity"
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden" />
+        <activity android:name=".activities.ChatActivity" />
         <activity
             android:name=".activities.ProfileActivity"
             android:parentActivityName=".activities.HomeActivity" />

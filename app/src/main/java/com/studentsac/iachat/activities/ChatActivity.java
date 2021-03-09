@@ -7,7 +7,11 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +21,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.fxn.pix.Options;
+import com.fxn.pix.Pix;
+import com.fxn.utility.PermUtil;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -36,6 +43,7 @@ import com.studentsac.iachat.providers.ChatsProvider;
 import com.studentsac.iachat.providers.MessagesProvider;
 import com.studentsac.iachat.providers.UsersProvider;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -63,6 +71,9 @@ public class ChatActivity extends AppCompatActivity {
 
     ImageView imageViewSelectPictures;
 
+    Options mOptions;
+    ArrayList<String> mReturnValues = new ArrayList<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,6 +86,16 @@ public class ChatActivity extends AppCompatActivity {
         messagesProvider = new MessagesProvider();
         chatsProvider = new ChatsProvider();
 
+        mOptions = Options.init()
+                .setRequestCode(100)                                           //Request code for activity results
+                .setCount(5)                                                   //Number of images to restict selection count
+                .setFrontfacing(true)                                         //Front Facing camera on start
+                .setPreSelectedUrls(mReturnValues)                               //Pre selected Image Urls
+                .setSpanCount(4)                                               //Span count for gallery min 1 & max 5
+                .setMode(Options.Mode.All)                                     //Option to select only pictures or videos or both
+                .setVideoDurationLimitinSeconds(0)                            //Duration for video recording
+                .setScreenOrientation(Options.SCREEN_ORIENTATION_PORTRAIT)     //Orientaion
+                .setPath("/pix/images");                                       //Custom Path For media Storage
 
 
         editTextMessage = findViewById(R.id.textViewMessage);
@@ -85,6 +106,7 @@ public class ChatActivity extends AppCompatActivity {
         linearLayoutManager = new LinearLayoutManager(ChatActivity.this);
         linearLayoutManager.setStackFromEnd(true);
         recyclerViewMessage.setLayoutManager(linearLayoutManager);
+
 
         mAuth = FirebaseAuth.getInstance();
         showChatToolbar(R.layout.chat_toolbar);
@@ -97,6 +119,13 @@ public class ChatActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 createMessage();
+            }
+        });
+
+        imageViewSelectPictures.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startPix();
             }
         });
 
@@ -118,6 +147,10 @@ public class ChatActivity extends AppCompatActivity {
         }
     }
 
+    private void startPix() {
+        Pix.start(ChatActivity.this,mOptions);
+    }
+
     private void createMessage() {
         FirebaseUser currentUser = mAuth.getCurrentUser();
         String textMessage = editTextMessage.getText().toString();
@@ -128,6 +161,7 @@ public class ChatActivity extends AppCompatActivity {
             message.setIdUserReceive(userId);
             message.setMessage(textMessage);
             message.setStatus("SENT");
+            message.setType("text");
             message.setTimestamp(new Date().getTime());
             messagesProvider.create(message).addOnSuccessListener(new OnSuccessListener<Void>() {
                 @Override
@@ -267,5 +301,33 @@ public class ChatActivity extends AppCompatActivity {
                 finish();
             }
         });
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == Activity.RESULT_OK && requestCode == 100) {
+            mReturnValues = data.getStringArrayListExtra(Pix.IMAGE_RESULTS);
+            Intent intent = new Intent(ChatActivity.this,ConfirmImageSendActivity.class);
+            intent.putExtra("data",mReturnValues);
+            intent.putExtra("idChat",idChat);
+            intent.putExtra("idUserReceiver",userId);
+            startActivity(intent);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case PermUtil.REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Pix.start(ChatActivity.this, mOptions);
+                } else {
+                    Toast.makeText(ChatActivity.this, "Porfavor permite el acceso a la camara", Toast.LENGTH_LONG).show();
+                }
+                return;
+            }
+        }
     }
 }

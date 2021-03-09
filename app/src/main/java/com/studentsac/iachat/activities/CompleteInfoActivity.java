@@ -50,8 +50,8 @@ public class CompleteInfoActivity extends AppCompatActivity {
     CircleImageView mPhotoProfile;
 
     Options mOptions;
-
     ArrayList<String> mReturnValues = new ArrayList<>();
+
     File mImageFile;
 
     String mUsername = "";
