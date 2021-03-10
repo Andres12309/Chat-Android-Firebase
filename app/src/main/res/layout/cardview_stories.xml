@@ -14,8 +14,8 @@
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:Layout_constraintLeft_toLeftOf="parent"
-            app:Layout_constraintTop_toToptOf="parent">
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/circleImageStory"
                 android:layout_width="41dp"

@@ -32,6 +32,7 @@ public class ImageProvider {
         firebaseStorage = FirebaseStorage.getInstance();
         mStorage = firebaseStorage.getReference();
         messagesProvider = new MessagesProvider();
+        storiesProvider = new StoriesProvider();
         index = 0;
     }
 

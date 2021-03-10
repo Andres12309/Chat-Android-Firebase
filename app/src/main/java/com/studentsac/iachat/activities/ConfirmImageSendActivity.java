@@ -32,7 +32,7 @@ public class ConfirmImageSendActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_confirm_image_send);
 
-        viewPager = findViewById(R.id.viewpager);
+        viewPager = findViewById(R.id.viewPager);
         data = getIntent().getStringArrayListExtra("data");
         idChat = getIntent().getStringExtra("idChat");
         idUserReceiver = getIntent().getStringExtra("idUserReceiver");
@@ -77,6 +77,9 @@ public class ConfirmImageSendActivity extends AppCompatActivity {
     }
 
     public void setMessage(int position, String message){
+        if (message.equals("")) {
+            message = "\uD83D\uDCF7image";
+        }
         messages.get(position).setMessage(message);
     }
 

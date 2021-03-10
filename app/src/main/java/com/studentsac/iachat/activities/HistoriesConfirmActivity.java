@@ -22,7 +22,7 @@ public class HistoriesConfirmActivity extends AppCompatActivity {
     String idUserReceiver;
     ViewPager viewPager;
     ArrayList<String> data;
-    ArrayList<Story> stories;
+    ArrayList<Story> stories = new ArrayList<>();
 
     ImageProvider imageProvider;
 
@@ -32,7 +32,7 @@ public class HistoriesConfirmActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_histories_confirm);
 
-        viewPager = findViewById(R.id.viewpager);
+        viewPager = findViewById(R.id.viewPager);
         data = getIntent().getStringArrayListExtra("data");
 
         mAuth = FirebaseAuth.getInstance();
@@ -44,7 +44,7 @@ public class HistoriesConfirmActivity extends AppCompatActivity {
                 long limit = now + (60*1000*3);
 
                 Story s = new Story();
-                s.setIdea(mAuth.getCurrentUser().getUid());
+                s.setIdUser(mAuth.getCurrentUser().getUid());
                 s.setIdea("");
                 s.setTimestamp(now);
                 s.setTimestampLimit(limit);

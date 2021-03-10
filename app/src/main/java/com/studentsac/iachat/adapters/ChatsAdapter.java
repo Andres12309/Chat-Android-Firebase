@@ -112,6 +112,7 @@ public class ChatsAdapter extends FirestoreRecyclerAdapter<Chat, ChatsAdapter.Vi
 
                         if(message.getIdUserSend().equals(mAuth.getCurrentUser().getUid())){
                             holder.imageViewCheck.setVisibility(View.VISIBLE);
+
                             if(message.getStatus().equals("SENT")){
                                 holder.imageViewCheck.setImageResource(R.drawable.icon_check_false);
                             }

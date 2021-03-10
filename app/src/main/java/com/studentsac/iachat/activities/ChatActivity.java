@@ -45,6 +45,7 @@ import com.studentsac.iachat.providers.UsersProvider;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -93,7 +94,7 @@ public class ChatActivity extends AppCompatActivity {
                 .setPreSelectedUrls(mReturnValues)                               //Pre selected Image Urls
                 .setSpanCount(4)                                               //Span count for gallery min 1 & max 5
                 .setMode(Options.Mode.All)                                     //Option to select only pictures or videos or both
-                .setVideoDurationLimitinSeconds(0)                            //Duration for video recording
+                .setVideoDurationLimitinSeconds(30)                            //Duration for video recording
                 .setScreenOrientation(Options.SCREEN_ORIENTATION_PORTRAIT)     //Orientaion
                 .setPath("/pix/images");                                       //Custom Path For media Storage
 
@@ -171,12 +172,13 @@ public class ChatActivity extends AppCompatActivity {
                         messagesAdapter.notifyDataSetChanged();
                     }
                     chatsProvider.updateNumberMessage(idChat);
+                    getLastMessages(message);
                     //Toast.makeText(ChatActivity.this, "Mensaje enviado con exito", Toast.LENGTH_LONG).show();
                 }
             });
         }
         else{
-            //Toast.makeText(this, "No hay nada para enviar", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "No hay nada para enviar", Toast.LENGTH_LONG).show();
         }
     }
 
@@ -329,5 +331,26 @@ public class ChatActivity extends AppCompatActivity {
                 return;
             }
         }
+    }
+
+    private void getLastMessages(final Message message) {
+        messagesProvider.getLastMessagesByChatAndSender(idChat, mAuth.getCurrentUser().getUid()).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot querySnapshot) {
+                if (querySnapshot != null) {
+                    ArrayList<Message> messages = new ArrayList<>();
+
+                    for(DocumentSnapshot document: querySnapshot.getDocuments()) {
+                        Message m = document.toObject(Message.class);
+                        messages.add(m);
+                    }
+
+                    if (messages.size() == 0) {
+                        messages.add(message);
+                    }
+                    Collections.reverse(messages);
+                }
+            }
+        });
     }
 }

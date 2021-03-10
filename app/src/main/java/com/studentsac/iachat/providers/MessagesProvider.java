@@ -7,6 +7,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.studentsac.iachat.models.Message;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -25,6 +26,18 @@ public class MessagesProvider {
 
     public Query getMessageByChat(String idChat){
         return mCollectionReference.whereEqualTo("idChat",idChat).orderBy("timestamp",Query.Direction.ASCENDING);
+    }
+
+    public Query getLastMessagesByChatAndSender(String idChat, String idSender) {
+        ArrayList<String> status = new ArrayList<>();
+        status.add("SENT");
+
+        return mCollectionReference
+                .whereEqualTo("idChat", idChat)
+                .whereEqualTo("idUserSend", idSender)
+                .whereIn("status", status)
+                .orderBy("timestamp", Query.Direction.DESCENDING)
+                .limit(5);
     }
 
     public Task<Void> updateStatusMessages(String idMessage, String statusMessage){

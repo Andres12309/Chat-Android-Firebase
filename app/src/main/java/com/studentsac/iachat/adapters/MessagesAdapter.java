@@ -94,7 +94,7 @@ public class MessagesAdapter extends FirestoreRecyclerAdapter<Message, MessagesA
     }
 
     private void showImages(ViewHolder holder, Message message) {
-        if (message.getType().equals("imagen")) {
+        if (message.getType().equals("image")) {
             if (message.getUrlImage() != null) {
                 if (!message.getUrlImage().equals("")) {
                     holder.imageViewMessage.setVisibility(View.VISIBLE);

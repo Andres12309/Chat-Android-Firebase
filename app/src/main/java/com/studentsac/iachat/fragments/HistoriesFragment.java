@@ -12,6 +12,7 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -80,7 +81,7 @@ public class HistoriesFragment extends Fragment {
                 .setPreSelectedUrls(mReturnValues)                               //Pre selected Image Urls
                 .setSpanCount(4)                                               //Span count for gallery min 1 & max 5
                 .setMode(Options.Mode.All)                                     //Option to select only pictures or videos or both
-                .setVideoDurationLimitinSeconds(0)                            //Duration for video recording
+                .setVideoDurationLimitinSeconds(30)                            //Duration for video recording
                 .setScreenOrientation(Options.SCREEN_ORIENTATION_PORTRAIT)     //Orientaion
                 .setPath("/pix/images");                                       //Custom Path For media Storage
 
@@ -141,20 +142,21 @@ public class HistoriesFragment extends Fragment {
                             }
                         }
 
-                        if(found == false){
+                        if(!found){
                             mStoriesAnRepeat.add(s);
                         }
                     }
 
                     for(Story noRepeat: mStoriesAnRepeat){
                         ArrayList<Story> storiesListNew = new ArrayList<>();
-                        for(Story s : storiesListNew){
+                        for(Story s : storiesList){
                             if(s.getIdUser().equals(noRepeat.getIdUser())){
                                 storiesListNew.add(s);
                             }
                         }
 
                         String storiesJson = gson.toJson(storiesListNew);
+                        Log.d("STATUS", "JSON: " + storiesJson);
                         noRepeat.setJson(storiesJson);
                     }
 
