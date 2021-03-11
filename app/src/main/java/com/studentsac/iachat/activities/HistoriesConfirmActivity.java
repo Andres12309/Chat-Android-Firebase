@@ -41,7 +41,7 @@ public class HistoriesConfirmActivity extends AppCompatActivity {
         if(data != null){
             for(int i=0;i<data.size();i++){
                 long now = new Date().getTime();
-                long limit = now + (60*1000*3);
+                long limit = now + (60*1000*60*12);
 
                 Story s = new Story();
                 s.setIdUser(mAuth.getCurrentUser().getUid());

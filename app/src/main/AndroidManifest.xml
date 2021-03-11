@@ -10,13 +10,15 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/icon_iachat"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@drawable/icon_iachat"
         android:supportsRtl="true"
         android:theme="@style/Theme.IAChat"
         tools:replace="android:theme">
-        <activity android:name=".activities.HistoriesConfirmActivity"
+        <activity android:name=".activities.StoriesDetailActivity"/>
+        <activity
+            android:name=".activities.HistoriesConfirmActivity"
             android:windowSoftInputMode="adjustResize|stateAlwaysHidden" />
         <activity
             android:name=".activities.ConfirmImageSendActivity"

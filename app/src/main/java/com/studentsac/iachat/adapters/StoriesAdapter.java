@@ -28,6 +28,7 @@ import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 import com.studentsac.iachat.R;
 import com.studentsac.iachat.activities.ChatActivity;
+import com.studentsac.iachat.activities.StoriesDetailActivity;
 import com.studentsac.iachat.models.Chat;
 import com.studentsac.iachat.models.Message;
 import com.studentsac.iachat.models.Story;
@@ -83,6 +84,7 @@ public class StoriesAdapter extends RecyclerView.Adapter<StoriesAdapter.ViewHold
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.cardview_stories,parent,false);
+
         return new ViewHolder(view);
     }
 
@@ -94,6 +96,15 @@ public class StoriesAdapter extends RecyclerView.Adapter<StoriesAdapter.ViewHold
 
         setLastImageStory(holder,storiesJson);
         getUserInfo(holder, stories.get(position).getIdUser());
+
+        holder.mViewAdapter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, StoriesDetailActivity.class);
+                intent.putExtra("stories",stories.get(position).getJson());
+                context.startActivity(intent);
+            }
+        });
     }
 
     private void setLastImageStory(ViewHolder holder, Story[] storiesJson) {
@@ -134,4 +145,5 @@ public class StoriesAdapter extends RecyclerView.Adapter<StoriesAdapter.ViewHold
             textViewNumberMessageNoRead = view.findViewById(R.id.textViewMessagePend);
         }
     }
+
 }

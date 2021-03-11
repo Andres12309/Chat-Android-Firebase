@@ -45,6 +45,7 @@ dependencies {
     implementation 'com.github.rahimlis:badgedtablayout:v1.2'
     implementation 'com.squareup.picasso:picasso:2.5.2'
     implementation 'com.devlomi:circularstatusview:1.0.1'
+    implementation 'com.github.shts:StoriesProgressView:3.0.0'
 
     implementation platform('com.google.firebase:firebase-bom:26.5.0')
     implementation 'com.google.firebase:firebase-storage'
