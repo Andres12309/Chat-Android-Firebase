@@ -67,7 +67,7 @@ En un emulador o dispositivo fisico
 
 _En el proyecto se encuantra un archivo IAChat.apk, puedes usarla en cualquier dispositivo android o a su vez usar un emulador_
 
-**Puedes encontrar la **APP** en la tienda **[Uptodown]**() 📢**
+**Puedes encontrar la APP en la tienda [Uptodown]() 📢**
 
 ### Build APK 🔩
 
