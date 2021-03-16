@@ -7,7 +7,7 @@ _Chat con Android Studio con Java, usando los servicios de almacenamiento de fir
 _Este es un proyecto de chat privado con correo usando Google Autentication, ademas posee un envio de imagenes que estaran almacenados en firebase_
 
 
-**También puedes mirar el video del funcionamiento de este proyecto en [youtube]().**
+**También puedes mirar el video del funcionamiento de la aplicacion en [youtube](https://youtu.be/yIVs0m0knb0).**
 
 ### Instrucciones 📋
 
@@ -53,7 +53,7 @@ _Este tendra clases que pueden ser usado en cualquier proyecto para comprimir un
 
 _Este tendra todos los diseños .XML de todas las vistas que tendra la aplicacion, ya sea fragmentos, cards y todas las actividades diseñadas con sus estilos que estaran en **VALUES** y iconos que estaran en **DRAWABLE**._
 
-**También puedes mirar el video de la explicacion de este proyecto en [youtube]().**
+**También puedes mirar el video de la explicacion de este proyecto en [youtube](https://youtu.be/WLqSWsKz1VY).**
 
 ## Ejecución del proyecto🔩
 
